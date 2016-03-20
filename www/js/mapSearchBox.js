@@ -20,13 +20,13 @@
                                     var latLonArray=latLonStr.split(",");
                                     if(obj.properties.street!=undefined)
                                     {
-                                        $("#fill").prepend("<li><a href='#map' onclick='setLocation("+latLonArray[1]+","+latLonArray[0]+");' class='ui-btn'>"+obj.properties.street+","+obj.properties.city+","+obj.properties.state+","+obj.properties.country +"</a></li>");
+                                        $("#fill").prepend("<li><a href='#MapDisplay' onclick='setLocation("+latLonArray[1]+","+latLonArray[0]+");' class='ui-btn'>"+obj.properties.street+","+obj.properties.city+","+obj.properties.state+","+obj.properties.country +"</a></li>");
                                             console.log(latLonArray[0]+","+latLonArray[1]);
                                             $("#searchLoading").css("display","none");
                                     }
                                     else if(obj.properties.city!=undefined && obj.properties.state!=undefined)
                                     {
-                                        $("#fill").prepend("<li><a href='#map' onclick='setLocation("+latLonArray[1]+","+latLonArray[0]+");' class='ui-btn'>"+obj.properties.city+","+obj.properties.state+","+obj.properties.country +"</a></li>");
+                                        $("#fill").prepend("<li><a href='#MapDisplay' onclick='setLocation("+latLonArray[1]+","+latLonArray[0]+");' class='ui-btn'>"+obj.properties.city+","+obj.properties.state+","+obj.properties.country +"</a></li>");
                                         console.log(latLonArray[0]+","+latLonArray[1]);
                                         $("#searchLoading").css("display","none"); 
                                     }
