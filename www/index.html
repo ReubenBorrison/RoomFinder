@@ -126,7 +126,7 @@
             </div>
             <div data-role="main" class="ui-content">
                 <div id="picCollection">
-                    <a href="#cameraPopUp" data-rel="popup" class="centerOfPage" data-transition="slide" data-position-to="window">
+                    <a href="#cameraPopUp" data-rel="popup" class="centerOfPage" data-position-to="window">
                     <img src="" height="50px" width="50px" class="centerOfPage" id="myImage"/>  
                     </a>                
                 </div>
@@ -198,20 +198,14 @@
                 <h1>Results</h1>
                 <a href="" class="ui-btn ui-icon-carat-l ui-btn-icon-left ui-btn-icon-notext" data-rel="back" style="background-color:#76AA32;border-color:#76AA32;box-shadow:0 0 0 0;" data-transition="slide"></a>
             </div>
-            <div data-role="content" onload="refreshMap();">
+            <div data-role="content" >
                 <div id="map" style="height:500px;"></div>
                 <input type="button" onclick="refreshMap();"/>
             </div>
         </div>
 <!-- Next Page: room info display -->
-        <script type="text/javascript">
         
-        function refreshMap()
-        {
-            map.invalidateSize('true');
-        }
-        </script>
-        <!--<script type="text/javascript" src="js/mapSearchBox.js"> </script>-->
+        <script type="text/javascript" src="js/mapSearchBox.js"> </script>
         <script type="text/javascript" src="cordova.js"></script>
         <script>
         
