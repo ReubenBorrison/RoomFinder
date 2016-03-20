@@ -22,7 +22,7 @@
             }
 
             .ui-panel.ui-panel-position-right {
-            width: 10em;
+            width: 5em;
             }
 
             .ui-panel.ui-panel-closed {
@@ -53,6 +53,11 @@
             transform: translate3d(5em, 0, 0);
             }
 
+            .ui-panel-animate.ui-panel-page-content-position-right{
+                -webkit-transform:translate3d(-5em,0,0);
+                -moz-transform:translate3d(-5em,0,0);
+                transform:translate3d(-5em,0,0);
+            }
             .ui-panel-animate.ui-panel-content-fixed-toolbar-position-right.ui-panel-content-fixed-toolbar-open.ui-panel-content-fixed-toolbar-display-reveal, .ui-panel-animate.ui-panel-content-fixed-toolbar-position-right.ui-panel-content-fixed-toolbar-open.ui-panel-content-fixed-toolbar-display-push, .ui-panel-animate.ui-panel-content-wrap-position-right.ui-panel-content-wrap-open.ui-panel-content-wrap-display-reveal, .ui-panel-animate.ui-panel-content-wrap-position-right.ui-panel-content-wrap-open.ui-panel-content-wrap-display-push {
             -webkit-transform: translate3d(-10em, 0, 0);
             -moz-transform: translate3d(-10em, 0, 0);
@@ -99,23 +104,19 @@
     </head>
     <body>
         <div data-role="page" id="dashboard" style=" background: #000; background-image:url(img/bg.gif);background-size:cover;">
-            <div data-role="panel" id="panelLogin" data-display="push" data-position-fixed="true">
-                <div style="height:100px; width:100%">
-                    <img src="" height="50px" width="50px" style="display:block;margin-left:auto; margin-right:auto;"/>
-                </div>
-            </div>
+            
             <div data-role="main" class="ui-content">
                 
                <h1 style="text-align:center; color:white;">Finding Rooms Made Easy</h1>
-               <div style="height:200px"></div>
+               <div style="height:150px"></div>
                <a href="#searchPage" class="ui-btn" style="box-shadow:0 0 0 0;" data-transition="slide">Search for Rooms</a>
                <h1 style="text-align:center;color:white;">or</h1>
                <input type="button" style="box-shadow:0 0 0 0;" onclick="loginOrNot();" value="Place an Ad"/>
                <a href="#userDashboard" class="ui-btn" style="box-shadow:0 0 0 0;" data-transition="slide">My dashboard</a>
             </div>
         </div> 
-<!-- Next page:AD -->
-        <div data-role="page" id="ad">
+        <!-- user dashboard -->
+        <div data-role="page" id="userDashboard">
             <div data-role="panel" id="panelLogin" data-display="push" data-position-fixed="true">
                 <div style="height:100px; width:100%">
                     <img src="" height="50px" width="50px" style="display:block;margin-left:auto; margin-right:auto;"/>
@@ -124,6 +125,22 @@
             <div data-role="header" data-position-fixed="true">
                 <h1> Place an Ad</h1>
                 <a href="" class="ui-btn ui-icon-carat-l ui-btn-icon-left ui-btn-icon-notext" data-rel="back" style="background-color:#76AA32;border-color:#76AA32;box-shadow:0 0 0 0;" data-transition="slide"></a>
+            </div>
+            <div data-role="content">
+
+            </div>
+        </div>
+<!-- Next page:AD -->
+        <div data-role="page" id="ad">
+            <div data-role="panel" id="panelLogin" data-display="push" data-position-fixed="true" data-position="right">
+                <div style="height:100px; width:100%">
+                    <img src="" height="50px" width="50px" style="display:block;margin-left:auto; margin-right:auto;"/>
+                </div>
+            </div>
+            <div data-role="header" data-position-fixed="true">
+                <h1> Place an Ad</h1>
+                <a href="" class="ui-btn ui-icon-carat-l ui-btn-icon-left ui-btn-icon-notext" data-rel="back" style="background-color:#76AA32;border-color:#76AA32;box-shadow:0 0 0 0;" data-transition="slide"></a>
+                <a href="#panelLogin" class="ui-btn ui-icon-bars ui-btn-icon-right ui-btn-icon-notext" style="background-color:#76AA32;border-color:#76AA32;box-shadow:0 0 0 0;" data-transition="slide"></a>
             </div>
             <div data-role="main" class="ui-content">
                 <div id="picCollection">
@@ -136,15 +153,7 @@
                     <input type="button" onclick="capturePhoto();" value="camera"/>
                     <input type="button" onclick="getPhoto(pictureSource.SAVEDPHOTOALBUM);" value="Choose from gallery"/>
                 </div>
-                <div style="display:none;">
-                    <form id="uploadimage" action="" method="post" enctype="multipart/form-data" name="fileinfo">
-                                             
-                        <input type="file" name="file[]" id="file" required multiple/>
-                        <input type="hidden" name="upload" id="uploadDir" value=""/>
-                        <input type="submit" value="Upload" class="submit" />
-                        
-                    </form>
-                </div>
+                <img src="css/themes/images/ajax-loader.gif" id="adLoading" style="display:none;margin-right:auto;margin-left:auto;"/>
                 <input type="text" placeholder="Enter Location" id="location" name="" style="display:block;float:left; width:90%"/>
                 <a href="" class="ui-icon-location ui-btn ui-btn-icon-notext" onclick="currentPosition('roomListPage');"></a>                
                 <ul id="fill2" data-role="listview" data-inset="true">
@@ -153,7 +162,13 @@
                 <input type="text" placeholder="Price" id="price"/>
                 <textarea placeholder="description or additional details" id="description"></textarea>
                 <input type="button" value="post" onclick="postData();"/>
-                <div id="message"></div>
+                <div data-role="popup" id="message">
+                    <img src="css/themes/images/ajax-loader.gif" />
+                    <p id="msg"></p>
+                </div>
+                <div id="error">
+                    
+                </div>
             </div>
         </div>
 <!-- Next page: Login -->
@@ -168,9 +183,9 @@
                 <a href="" class="ui-btn ui-icon-carat-l ui-btn-icon-left ui-btn-icon-notext" data-rel="back" style="background-color:#76AA32;border-color:#76AA32;box-shadow:0 0 0 0;" data-transition="slide"></a>
             </div>
             <div data-role="main" class="ui-content">
-                <input type="button" onclick="fblogin();" value="Login to Facebook" data-transition="slide"/>
-                <h1 id="userName"></h1>
-                <img src="" height="50px" width="50px" id="userPic" style="display:block;margin-left:auto; margin-right:auto;"/>
+                <h1 style="text-align:center;"> It seems you need to login </h1>
+                <p>Sign in using your facebook account! It reduces effort to remember multiple passwords!</p>
+                <input type="button" onclick="fblogin();" value="Login using Facebook" data-transition="slide"/>
             </div>
         </div>
 <!-- Next Page: search -->
@@ -185,11 +200,13 @@
                 <a href="" class="ui-btn ui-icon-carat-l ui-btn-icon-left ui-btn-icon-notext" data-rel="back" style="background-color:#76AA32;border-color:#76AA32;box-shadow:0 0 0 0;" data-transition="slide"></a>
             </div>
             <div data-role="main" class="ui-content">
-                <div style="height:300px;"></div>
-                <input type="text" id="search" placeholder="enter a location" style="border-bottom:2px solid black;background-color:white;"/>
-                <ul id="fill" data-role="listview" data-inset="true">
+                <div style="height:200px;">
+                </div>
+                <input type="text" id="search" placeholder="enter a location" style="border-bottom:2px solid black;background-color:white;width:90%;float:left;"/>
+                <img src="css/themes/images/ajax-loader.gif" id="searchLoading" style="display:none;"/>
+                <ul id="fill" data-role="listview" data-inset="true" style="clear:left;">
                 </ul>
-                <h1 style="text-align:center">or</h1>
+                <h1 style="text-align:center;clear:left;">or</h1>
                 <input type="button" value="search nearby" style="box-shadow:0 0 0 0;" onclick="currentPosition('searchPage');"/>
             </div>            
         </div>
