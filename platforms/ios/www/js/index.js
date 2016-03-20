@@ -116,7 +116,7 @@
         console.log(localStorage.getItem('FBUserID'));
         if(localStorage.getItem('FBUserID')===null)
         {
-            window.location="#ad";
+            window.location="#login";
         }
         else
         {
@@ -132,7 +132,7 @@
         }
     });
      $.ajax({
-                url:"http://ec2-52-58-42-113.eu-central-1.compute.amazonaws.com:7474/db/data/cypher",
+                url:"http://ec2-52-58-42-113.eu-central-1.compute.amazonaws.com/db/data/cypher",
                 //accepts: "application/json; charset=UTF-8",
                 type:"POST",
                 dataType:"json",
@@ -182,7 +182,7 @@
         }
         });
      $.ajax({
-                url:"http://ec2-52-58-42-113.eu-central-1.compute.amazonaws.com:7474/db/data/cypher",
+                url:"http://ec2-52-58-42-113.eu-central-1.compute.amazonaws.com/db/data/cypher",
                 //accepts: "application/json; charset=UTF-8",
                 type:"POST",
                 dataType:"json",

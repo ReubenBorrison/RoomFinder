@@ -1,7 +1,10 @@
 
  $(document).on("pagecreate","#dashboard",function(){
-                    var url="http://photon.komoot.de/api/?q=";
-                    var limit="&limit=5";
+        var map=new L.map('map');
+         
+        
+        var url="http://photon.komoot.de/api/?q=";
+        var limit="&limit=5";
 
                     $("#search").keyup(function(){
                         

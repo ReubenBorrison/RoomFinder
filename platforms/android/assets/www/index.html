@@ -6,13 +6,16 @@
         <meta name="msapplication-tap-highlight" content="no" />
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        
+        <link rel="stylesheet" href="css/leaflet.css" />
         <link rel="stylesheet" href="css/themes/RoomFinder.css" />
         <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
         <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.5.min.css" /> 
-        <link rel="stylesheet" href="css/leaflet.css" />
+        
         <script src="js/jquery-1.11.1.min.js"></script> 
-        <script src="js/jquery.mobile-1.4.5.min.js"></script> 
         <script src="js/leaflet.js"></script>
+        <script src="js/jquery.mobile-1.4.5.min.js"></script> 
+        
         <style>
             .ui-panel {
             width: 5em;
@@ -108,7 +111,7 @@
                <a href="#searchPage" class="ui-btn" style="box-shadow:0 0 0 0;" data-transition="slide">Search for Rooms</a>
                <h1 style="text-align:center;color:white;">or</h1>
                <input type="button" style="box-shadow:0 0 0 0;" onclick="loginOrNot();" value="Place an Ad"/>
-               <a href="#MapDisplay" class="ui-btn" style="box-shadow:0 0 0 0;">  testDelMeMaps</a>
+               <a href="#userDashboard" class="ui-btn" style="box-shadow:0 0 0 0;" data-transition="slide">My dashboard</a>
             </div>
         </div> 
 <!-- Next page:AD -->
@@ -124,7 +127,7 @@
             </div>
             <div data-role="main" class="ui-content">
                 <div id="picCollection">
-                    <a href="#cameraPopUp" data-rel="popup" class="centerOfPage" data-transition="slide" data-position-to="window">
+                    <a href="#cameraPopUp" data-rel="popup" class="centerOfPage" data-position-to="window">
                     <img src="" height="50px" width="50px" class="centerOfPage" id="myImage"/>  
                     </a>                
                 </div>
@@ -196,27 +199,14 @@
                 <h1>Results</h1>
                 <a href="" class="ui-btn ui-icon-carat-l ui-btn-icon-left ui-btn-icon-notext" data-rel="back" style="background-color:#76AA32;border-color:#76AA32;box-shadow:0 0 0 0;" data-transition="slide"></a>
             </div>
-            <div data-role="content">
+            <div data-role="content" >
                 <div id="map" style="height:500px;"></div>
+                <input type="button" onclick="refreshMap();"/>
             </div>
         </div>
 <!-- Next Page: room info display -->
-        <script>
-        document.addEventListener('deviceready',function(){
-            var map=new L.map('map');
-        lat=8.61;
-        lon=49.41;
-        map.setView([lat,lon],11);
-        console.log(lat+lon);
-        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {maxZoom: 18}).addTo(map);
-        var marker = L.marker([lat, lon]).addTo(map);
-        marker.bindPopup("latitude: "+lat+" longitude: "+lon).openPopup();
-
-        });
         
-
-        </script>
-        <!--<script type="text/javascript" src="js/mapSearchBox.js"> </script>-->
+        <script type="text/javascript" src="js/mapSearchBox.js"> </script>
         <script type="text/javascript" src="cordova.js"></script>
         <script>
         
