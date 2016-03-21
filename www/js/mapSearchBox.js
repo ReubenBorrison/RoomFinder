@@ -205,7 +205,7 @@ function currentPosition(elementId)
         if(elementId==="searchPage")
         {
 
-            setLocation(lat,lon);
+            displayRoomsOnMap(lat,lon);
             $("#searchLoading").css("display","none");
         }
         else if(elementId==="roomListPage")
