@@ -99,6 +99,21 @@
                 margin:0px;
                 z-index: -1;
             }
+            .swipe {
+              overflow: hidden;
+              visibility: hidden;
+              position: relative;
+            }
+            .swipe-wrap {
+              overflow: hidden;
+              position: relative;
+            }
+            .swipe-wrap > div {
+              float:left;
+              width:100%;
+              position: relative;
+              overflow: hidden;
+            }
         </style>
         <title>Room Finder</title>
     </head>
@@ -266,6 +281,14 @@
                 No. of rooms
                 room description
                 comments -->
+                <div id="slider" class="swipe">
+                    <div class="swipe-wrap" style="width:300px !important ;">
+                        <div style="width:300px !important;"><img src="http://cdn.homedit.com/wp-content/uploads/2015/06/modern-black-and-white-living-room-stripede-rug.jpg" alt="Room image" width = "300" height = "200" ></div>
+                        <div><b>2</b></div>
+                        <div><b>3</b></div>
+                        <div><b>4</b></div>
+                    </div>
+                </div>
                 <span id="roomPrice"></span>
                 <span id="roomContact"></span>
                 <span id="roomNumber"></span>
@@ -278,20 +301,30 @@
 
         </div>
         
-        <script type="text/javascript" src="cordova.js"></script>
-        <script>
-        
-            $(document).swiperight(function()
-            {
-                $("#panelLogin").panel("open");
-            });
-                    
-                
-             </script>       
+        <script type="text/javascript" src="cordova.js"></script>      
         <script src="js/openfb.js"></script>
         <script type="text/javascript" src="js/camera.js"></script>
         <script type="text/javascript" src="js/index.js"></script> 
         <script type="text/javascript" src="js/mapSearchBox.js"> </script>
-        <script type="text/javascript" src="js/fbCode.js"></script>      
+        <script type="text/javascript" src="js/fbCode.js"></script>  
+        <script src="js/swipe.js"></script>
+        <script>
+            var element = document.getElementById('slider');
+            // pure JS
+            window.mySwipe = new Swipe(element, {
+              startSlide: 0,
+              //auto: 3000,
+              draggable: true,
+              autoRestart: false,
+              continuous: true,
+              disableScroll: true,
+              stopPropagation: true,
+              callback: function(index, element) {},
+              transitionEnd: function(index, element) {}
+            });
+            // using jQuery
+            //window.mySwipe = $('#mySwipe').Swipe().data('Swipe');
+        </script>
+    
         </body>
 </html>
