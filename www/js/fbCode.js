@@ -1,5 +1,4 @@
-document.addEventListener("deviceready",function(){
-	 openFB.init({appId: '1686513458277979', tokenStore: window.localStorage});
+openFB.init({appId: '1686513458277979', tokenStore: window.localStorage});
     function fblogin() {
         openFB.login(
                 function(response) {
@@ -30,7 +29,7 @@ document.addEventListener("deviceready",function(){
                 //accepts: "application/json; charset=UTF-8",
                 type:"POST",
                 dataType:"json",
-                data: '{ "query" : "create({name:{name},id:{id}})", \
+                data: '{ "query" : "create(user:user{name:{name},id:{id}})", \
                         "params": {"name":"'+name+'","id":"'+id+'"}}',
                 success:function(data,xhr,status){
                 alert("success nodes created");
@@ -58,14 +57,25 @@ document.addEventListener("deviceready",function(){
         }
         });
          $.ajax({
-                url:"http://ec2-52-58-42-113.eu-central-1.compute.amazonaws.com:7474/db/data/cypher",
+                url:"http://ec2-52-58-42-113.eu-central-1.compute.amazonaws.com/db/data/cypher",
                 //accepts: "application/json; charset=UTF-8",
                 type:"POST",
                 dataType:"json",
                 data: '{ "query" : "match(n{id:{id}}) return n", \
                         "params": {"id":"'+id+'"}}',
                 success:function(data,xhr,status){
-                return data.data[0][0].data.id;
+                
+                var id1=data.data.length;
+                console.log(data);
+                console.log(id1);
+                if(id1==0)
+                {
+                	localStorage.setItem("statusOfId","createNew");
+                }
+                else
+                {
+                	localStorage.setItem("statusOfId","exists");
+                }
                  // for(var i in data.data)
                 // {
                 //       $("#demo").append(data.data[i][0].data.name);
@@ -73,12 +83,13 @@ document.addEventListener("deviceready",function(){
                 
                 },
                 error:function(xhr,err,msg){
+                	alert(err);
                             console.log(xhr);
                             console.log(err);
                             console.log(msg);
                 }
             });
-                 
+             
 
     }
     function getInfo() {
@@ -86,19 +97,21 @@ document.addEventListener("deviceready",function(){
             path: '/v2.5/me',
             success: function(data) {
                 localStorage.setItem('FBUserID',data.id);
-                alert(localStorage.getItem('FBUserID'));
-                alert(JSON.stringify(data));
-                    if(matchUser(data.id)===undefined)
+                matchUser(data.id);
+                statusOfId=localStorage.getItem("statusOfId");
+             	    if(statusOfId==="exists")
                     {
-                        alert("user exists");
+                       	window.location="#ad";
                     }
-                    else
+                    else if(statusOfId==="createNew")
                     {
-                        createUser(data.id,data.name,data.email);
-                        alert(matchUser(data.id));
+                        createUser(data.id,data.name);
+                        window.location="#ad";
                     }
-                document.getElementById("userName").innerHTML = data.name;
-                document.getElementById("userPic").src = 'http://graph.facebook.com/' + data.id + '/picture?type=small';
+                $("#userName").html(data.name);
+                imgsrc='http://graph.facebook.com/' + data.id + '/picture?type=small';                
+                $("#userPic").attr("src",imgsrc);
+
             },
             error: errorHandler});
     }
@@ -135,10 +148,11 @@ document.addEventListener("deviceready",function(){
         openFB.logout(
                 function() {
                     alert('Logout successful');
+                    localStorage.removeItem("FBUserID");
+                    window.location="#dashboard";
                 },
                 errorHandler);
     }
     function errorHandler(error) {
         alert(error.message);
     }
-},false);
