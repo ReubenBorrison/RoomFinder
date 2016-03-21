@@ -90,8 +90,8 @@ $(document).on("pagecreate","#dashboard",function(){
 });
 function displayRoomsOnMap(lat,lon)
 {   
-    map.setView([lat,lon],11);
-    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18}).addTo(map);
+    map.setView([lat,lon],18);
+    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 22}).addTo(map);
     var qLatLeft=lat+.050;
     var qLatRight=lat-.050;
     var qLonLeft=lon+.050;
@@ -118,18 +118,24 @@ function displayRoomsOnMap(lat,lon)
                     alert("no results found");
                 }
                 else{
-                    for(var i=0;i<data.data[0].length;i++)
+                    
+                    $.each(data.data,function(d)
                     {
-                      lati=data.data[0][i].data.latitude;
-                      longi=data.data[0][i].data.longitude;
+                        console.log(JSON.stringify(d));
+                    });
+                    for(var i=0;i<data.data.length;i++)
+                    {
+                        console.log(data.data.length);
+                      lati=data.data[i][0].data.latitude;
+                      longi=data.data[i][0].data.longitude;
                       marker = L.marker([lati, longi]).addTo(map);
-                      description=data.data[0][i].data.description;
-                      roomNum=data.data[0][i].data.roomNum;
-                      price=data.data[0][i].data.price;
-                      console.log(typeof price);
+                      description=data.data[i][0].data.description;
+                      roomNum=data.data[i][0].data.roomNum;
+                      price=data.data[i][0].data.price;
+                      console.log(lati);
                       markerContent='<a href="" data-transition="slide" onclick="roomDisplay('+price+','+roomNum+');"><p><img src="" alt="Room image" width="80" height="80"> '+description+'<br>Phone number: 5</p></a>';
                       marker.bindPopup(markerContent);
-                      map.invalidateSize('true');
+                      
                     }
                     
                     window.location="#MapDisplay";

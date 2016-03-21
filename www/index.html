@@ -6,7 +6,7 @@
         <meta name="msapplication-tap-highlight" content="no" />
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
         <link rel="stylesheet" href="css/leaflet.css" />
         <link rel="stylesheet" href="css/themes/RoomFinder.css" />
         <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
@@ -15,54 +15,10 @@
         <script src="js/jquery-1.11.1.min.js"></script> 
         <script src="js/leaflet.js"></script>
         <script src="js/jquery.mobile-1.4.5.min.js"></script> 
-        
+        <script src="/js/jquery.slideme2.js"></script>
+        <link href="/css/slideme.css" rel="stylesheet"/>
         <style>
-            .ui-panel {
-            width: 5em;
-            }
-
-            .ui-panel.ui-panel-position-right {
-            width: 5em;
-            }
-
-            .ui-panel.ui-panel-closed {
-            width: 0;
-            }
-
-            .ui-panel-animate.ui-panel-position-left.ui-panel-display-overlay, .ui-panel-animate.ui-panel-position-left.ui-panel-display-push {
-            -webkit-transform: translate3d(-5em, 0, 0);
-            -moz-transform: translate3d(-5em, 0, 0);
-            transform: translate3d(-5em, 0, 0)
-            }
-
-            .ui-panel-animate.ui-panel-position-right.ui-panel-display-overlay, .ui-panel-animate.ui-panel-position-right.ui-panel-display-push {
-            -webkit-transform: translate3d(10em, 0, 0);
-            -moz-transform: translate3d(10em, 0, 0);
-            transform: translate3d(10em, 0, 0)
-            }
-
-            .ui-panel-animate.ui-panel-content-fixed-toolbar-position-left.ui-panel-content-fixed-toolbar-open.ui-panel-content-fixed-toolbar-display-reveal, .ui-panel-animate.ui-panel-content-fixed-toolbar-position-left.ui-panel-content-fixed-toolbar-open.ui-panel-content-fixed-toolbar-display-push, .ui-panel-animate.ui-panel-content-wrap-position-left.ui-panel-content-wrap-open.ui-panel-content-wrap-display-reveal, .ui-panel-animate.ui-panel-content-wrap-position-left.ui-panel-content-wrap-open.ui-panel-content-wrap-display-push {
-            -webkit-transform: translate3d(5em, 0, 0);
-            -moz-transform: translate3d(5em, 0, 0);
-            transform: translate3d(5em, 0, 0)
-            }
-
-            .ui-panel-animate.ui-panel-page-content-position-left{
-            -webkit-transform: translate3d(5em, 0, 0);
-            -moz-transform: translate3d(5em, 0, 0);
-            transform: translate3d(5em, 0, 0);
-            }
-
-            .ui-panel-animate.ui-panel-page-content-position-right{
-                -webkit-transform:translate3d(-5em,0,0);
-                -moz-transform:translate3d(-5em,0,0);
-                transform:translate3d(-5em,0,0);
-            }
-            .ui-panel-animate.ui-panel-content-fixed-toolbar-position-right.ui-panel-content-fixed-toolbar-open.ui-panel-content-fixed-toolbar-display-reveal, .ui-panel-animate.ui-panel-content-fixed-toolbar-position-right.ui-panel-content-fixed-toolbar-open.ui-panel-content-fixed-toolbar-display-push, .ui-panel-animate.ui-panel-content-wrap-position-right.ui-panel-content-wrap-open.ui-panel-content-wrap-display-reveal, .ui-panel-animate.ui-panel-content-wrap-position-right.ui-panel-content-wrap-open.ui-panel-content-wrap-display-push {
-            -webkit-transform: translate3d(-10em, 0, 0);
-            -moz-transform: translate3d(-10em, 0, 0);
-            transform: translate3d(-10em, 0, 0)
-            }
+          
             @font-face{
                 font-family:'Raleway';
                 src:url('font/Raleway-Regular.ttf');
@@ -99,21 +55,6 @@
                 margin:0px;
                 z-index: -1;
             }
-            .swipe {
-              overflow: hidden;
-              visibility: hidden;
-              position: relative;
-            }
-            .swipe-wrap {
-              overflow: hidden;
-              position: relative;
-            }
-            .swipe-wrap > div {
-              float:left;
-              width:100%;
-              position: relative;
-              overflow: hidden;
-            }
         </style>
         <title>Room Finder</title>
     </head>
@@ -126,8 +67,8 @@
                <div style="height:150px"></div>
                <a href="#searchPage" class="ui-btn" style="box-shadow:0 0 0 0;" data-transition="slide">Search for Rooms</a>
                <h1 style="text-align:center;color:white;">or</h1>
-               <input type="button" style="box-shadow:0 0 0 0;" onclick="loginOrNot();" value="Place an Ad"/>
-               <a href="#userDashboard" class="ui-btn" style="box-shadow:0 0 0 0;" data-transition="slide">My dashboard</a>
+               <input type="button" style="box-shadow:0 0 0 0;" onclick="loginOrNot('ad');" value="Place an Ad"/>
+               <a href="" class="ui-btn" style="box-shadow:0 0 0 0;" data-transition="slide" onclick="loginOrNot('dashboard');">My dashboard</a>
             </div>
         </div> 
         <!-- user dashboard -->
@@ -149,7 +90,7 @@
         <div data-role="page" id="ad">
             <div data-role="panel" id="panelLogin" data-display="push" data-position-fixed="true" data-position="right">
                 <div style="height:100px; width:100%">
-                    <img id="userPic" src="" style="display:block;margin-left:auto; margin-right:auto;max-height:50px;max-width:50px;"/>
+                    <img class="userPic" src="" style="display:block;margin-left:auto; margin-right:auto;max-height:50px;max-width:50px;"/>
                     <p id="userName"></p>
                 </div>
                 <hr>
@@ -245,15 +186,16 @@
                 <a href="" class="ui-btn ui-icon-carat-l ui-btn-icon-left ui-btn-icon-notext" data-rel="back" style="background-color:#76AA32;border-color:#76AA32;box-shadow:0 0 0 0;" data-transition="slide"></a>
             </div>
             <div data-role="content" >
+                <input type="button" onclick="refreshMap();" value="refresh"/>
                 <div id="map" style="height:500px;"></div>
-                <input type="button" onclick="refreshMap();"/>
+                
             </div>
         </div>
 <!-- Next Page: room info display -->
         <div data-role="page" id="roomDisplay">
             <div data-role="panel" id="panelLogin" data-display="push" data-position-fixed="true" data-position="right">
                 <div style="height:100px; width:100%">
-                    <img id="userPic" src="" style="display:block;margin-left:auto; margin-right:auto;max-height:50px;max-width:50px;"/>
+                    <img class="userPic" src="" style="display:block;margin-left:auto; margin-right:auto;max-height:50px;max-width:50px;"/>
                     <p id="userName"></p>
                 </div>
                 <hr>
@@ -269,26 +211,20 @@
                     Logout
                 </div>
             </div>
-            <div data-role="header" data-position="fixed">
+            <div data-role="header">
                 <h1> Place an Ad</h1>
                 <a href="" class="ui-btn ui-icon-carat-l ui-btn-icon-left ui-btn-icon-notext" data-rel="back" style="background-color:#76AA32;border-color:#76AA32;box-shadow:0 0 0 0;" data-transition="slide"></a>
                 <a href="#panelLogin" class="ui-btn ui-icon-bars ui-btn-icon-right ui-btn-icon-notext" style="background-color:#76AA32;border-color:#76AA32;box-shadow:0 0 0 0;" data-transition="slide"></a>
             </div>
-            <div data-role="content">
+            
               <!--   image slider
                 room price
                 contact
                 No. of rooms
                 room description
                 comments -->
-                <div id="slider" class="swipe">
-                    <div class="swipe-wrap" style="width:300px !important ;">
-                        <div style="width:300px !important;"><img src="http://cdn.homedit.com/wp-content/uploads/2015/06/modern-black-and-white-living-room-stripede-rug.jpg" alt="Room image" width = "300" height = "200" ></div>
-                        <div><b>2</b></div>
-                        <div><b>3</b></div>
-                        <div><b>4</b></div>
-                    </div>
-                </div>
+                <div data-role="content" id="container">
+
                 <span id="roomPrice"></span>
                 <span id="roomContact"></span>
                 <span id="roomNumber"></span>
@@ -297,9 +233,9 @@
                 <input type="button" value="comment"/>
                 <div id="commentBox">
                 </div>
-            </div>
+          
 
-        </div>
+        </div>  
         
         <script type="text/javascript" src="cordova.js"></script>      
         <script src="js/openfb.js"></script>
@@ -309,19 +245,11 @@
         <script type="text/javascript" src="js/fbCode.js"></script>  
         <script src="js/swipe.js"></script>
         <script>
-            var element = document.getElementById('slider');
-            // pure JS
-            window.mySwipe = new Swipe(element, {
-              startSlide: 0,
-              //auto: 3000,
-              draggable: true,
-              autoRestart: false,
-              continuous: true,
-              disableScroll: true,
-              stopPropagation: true,
-              callback: function(index, element) {},
-              transitionEnd: function(index, element) {}
-            });
+            
+            function refreshMap()
+            {
+                map.invalidateSize('true');
+            }
             // using jQuery
             //window.mySwipe = $('#mySwipe').Swipe().data('Swipe');
         </script>

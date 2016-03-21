@@ -1,16 +1,5 @@
 openFB.init({appId: '1686513458277979', tokenStore: window.localStorage});
-    function fblogin() {
-        openFB.login(
-                function(response) {
-                    if(response.status === 'connected') {
-                                              
-                                        
-                         getInfo();
-                    } else {
-                        alert('Facebook login failed: ' + response.error);
-                    }
-                }, {scope: 'email'});
-    }
+    
     function localStorages(id,name){
         localStorage.setItem('FBUserID',id);
         localStorage.setItem('name',name);
@@ -49,6 +38,7 @@ openFB.init({appId: '1686513458277979', tokenStore: window.localStorage});
     }
     function matchUser(id){
         var returnid;
+        console.log(id);
         $.ajaxSetup({
         beforeSend: function(xhr) {
             xhr.setRequestHeader("Accept","application/json; charset=UTF-8");
@@ -56,7 +46,7 @@ openFB.init({appId: '1686513458277979', tokenStore: window.localStorage});
             xhr.setRequestHeader("Content-Type", "application/json");
         }
         });
-         $.ajax({
+        return $.ajax({
                 url:"http://ec2-52-58-42-113.eu-central-1.compute.amazonaws.com/db/data/cypher",
                 //accepts: "application/json; charset=UTF-8",
                 type:"POST",
@@ -68,6 +58,7 @@ openFB.init({appId: '1686513458277979', tokenStore: window.localStorage});
                 var id1=data.data.length;
                 console.log(data);
                 console.log(id1);
+                localStorage.removeItem("statusOfId");
                 if(id1==0)
                 {
                 	localStorage.setItem("statusOfId","createNew");
@@ -96,10 +87,12 @@ openFB.init({appId: '1686513458277979', tokenStore: window.localStorage});
         openFB.api({
             path: '/v2.5/me',
             success: function(data) {
-                localStorage.setItem('FBUserID',data.id);
-                matchUser(data.id);
-                statusOfId=localStorage.getItem("statusOfId");
-             	    if(statusOfId==="exists")
+
+                localStorages(data.id,data.name);
+                $.when(matchUser(data.id)).done(function(){
+                	statusOfId=localStorage.getItem("statusOfId");
+                	alert(statusOfId);
+                	if(statusOfId==="exists")
                     {
                        	window.location="#ad";
                     }
@@ -108,12 +101,28 @@ openFB.init({appId: '1686513458277979', tokenStore: window.localStorage});
                         createUser(data.id,data.name);
                         window.location="#ad";
                     }
-                $("#userName").html(data.name);
+                $(".userName").html(data.name);
                 imgsrc='http://graph.facebook.com/' + data.id + '/picture?type=small';                
-                $("#userPic").attr("src",imgsrc);
+                $("img.userPic").attr("src",imgsrc);
 
+                });
+                
+                
+             	    
             },
             error: errorHandler});
+    }
+    function fblogin() {
+        openFB.login(
+                function(response) {
+                    if(response.status === 'connected') 
+                    {                   
+                         getInfo();
+                    } 
+                    else {
+                        alert('Facebook login failed: ' + response.error);
+                    }
+                }, {scope: 'email'});
     }
     function share() {
         openFB.api({
@@ -145,13 +154,12 @@ openFB.init({appId: '1686513458277979', tokenStore: window.localStorage});
                 errorHandler);
     }
     function logout() {
-        openFB.logout(
-                function() {
+        
                     alert('Logout successful');
                     localStorage.removeItem("FBUserID");
                     window.location="#dashboard";
-                },
-                errorHandler);
+        
+        
     }
     function errorHandler(error) {
         alert(error.message);
