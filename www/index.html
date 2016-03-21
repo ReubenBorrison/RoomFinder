@@ -14,9 +14,11 @@
         
         <script src="js/jquery-1.11.1.min.js"></script> 
         <script src="js/leaflet.js"></script>
-        <script src="js/jquery.mobile-1.4.5.min.js"></script> 
+        <script src="js/jquery.mobile-1.4.5.min.js"></script>
+        <script  src="js/idangerous.swiper-1.9.1.min.js"></script> 
         <script src="/js/jquery.slideme2.js"></script>
         <link href="/css/slideme.css" rel="stylesheet"/>
+
         <style>
           
             @font-face{
@@ -55,6 +57,31 @@
                 margin:0px;
                 z-index: -1;
             }
+            .swiper-container {
+                width: 100%;
+                height: 100%;
+            }
+            .swiper-slide {
+                text-align: center;
+                font-size: 18px;
+                background: #fff;
+
+        /* Center slide text vertically */
+
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: -webkit-flex;
+                display: flex;
+                -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                -webkit-justify-content: center;
+                justify-content: center;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                -webkit-align-items: center;
+                align-items: center;
+            }
+           
         </style>
         <title>Room Finder</title>
     </head>
@@ -212,11 +239,50 @@
                 </div>
             </div>
             <div data-role="header">
-                <h1> Place an Ad</h1>
+                <h1>Room Images</h1>
                 <a href="" class="ui-btn ui-icon-carat-l ui-btn-icon-left ui-btn-icon-notext" data-rel="back" style="background-color:#76AA32;border-color:#76AA32;box-shadow:0 0 0 0;" data-transition="slide"></a>
                 <a href="#panelLogin" class="ui-btn ui-icon-bars ui-btn-icon-right ui-btn-icon-notext" style="background-color:#76AA32;border-color:#76AA32;box-shadow:0 0 0 0;" data-transition="slide"></a>
             </div>
-            
+   
+        <link rel="stylesheet" href="css/swiper.min.css">
+   <!-- Swiper -->
+   
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"><img src="http://vignette2.wikia.nocookie.net/fma/images/e/e9/Fmab-poster.png/revision/latest?cb=20131124145205" width = "300" height = "300" /></div>
+            <div class="swiper-slide"><img src="http://vignette3.wikia.nocookie.net/fma/images/d/d7/Fullmetal.Alchemist.full.1632834.jpg/revision/latest?cb=20131127162644" width = "300" height = "300"/></div>
+            <div class="swiper-slide">Slide 3</div>
+            <div class="swiper-slide">Slide 4</div>
+            <div class="swiper-slide">Slide 5</div>
+            <div class="swiper-slide">Slide 6</div>
+            <div class="swiper-slide">Slide 7</div>
+            <div class="swiper-slide">Slide 8</div>
+            <div class="swiper-slide">Slide 9</div>
+            <div class="swiper-slide">Slide 10</div>
+        </div>
+        <!-- Add Pagination -->
+        <div class="swiper-pagination"></div> 
+        <!-- Add Arrows -->
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+    </div>
+    
+
+    <!-- Swiper JS -->
+    <script src="js/swiper.min.js"></script>
+
+    <!-- Initialize Swiper -->
+    <script>
+    var swiper = new Swiper('.swiper-container', {
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+        spaceBetween: 30
+    });
+    </script>
+    
+
               <!--   image slider
                 room price
                 contact
@@ -229,9 +295,12 @@
                 <span id="roomContact"></span>
                 <span id="roomNumber"></span>
                 <span id="roomDesc"></span>
+                <!--
                 <input type="text" placeholder="enter comments"/>
                 <input type="button" value="comment"/>
                 <div id="commentBox">
+                -->
+
                 </div>
           
 
