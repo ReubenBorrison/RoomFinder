@@ -1,96 +1,91 @@
+$(document).on("pagecreate","#dashboard",function(){
+    var map=new L.map('map');
+    var url="http://photon.komoot.de/api/?q=";
+    var limit="&limit=5";
+$("#search").keyup(function(){
 
- $(document).on("pagecreate","#dashboard",function(){
-        var map=new L.map('map');
-         
-        
-        var url="http://photon.komoot.de/api/?q=";
-        var limit="&limit=5";
+    var val=$("#search").val();
+    if(val.length>=3)
+    {
+        $("#searchLoading").css("display","inline");
+        $("#fill").empty();
+        $.getJSON(url+val+limit,function(data,status){
 
-                    $("#search").keyup(function(){
-                        
-                        var val=$("#search").val();
-                        if(val.length>=3)
-                        {
-                            $("#searchLoading").css("display","inline");
-                            $("#fill").empty();
-                            $.getJSON(url+val+limit,function(data,status){
+            $.each(data.features,function(i,obj){
+                var latLonStr=obj.geometry.coordinates.toString();
+                var latLonArray=latLonStr.split(",");
+                if(obj.properties.street!=undefined)
+                {
+                    $("#fill").prepend("<li><a href='#map' onclick='setLocation("+latLonArray[1]+","+latLonArray[0]+");' class='ui-btn'>"+obj.properties.street+","+obj.properties.city+","+obj.properties.state+","+obj.properties.country +"</a></li>");
+                        console.log(latLonArray[0]+","+latLonArray[1]);
+                        $("#searchLoading").css("display","none");
+                }
+                else if(obj.properties.city!=undefined && obj.properties.state!=undefined)
+                {
+                    $("#fill").prepend("<li><a href='#map' onclick='setLocation("+latLonArray[1]+","+latLonArray[0]+");' class='ui-btn'>"+obj.properties.city+","+obj.properties.state+","+obj.properties.country +"</a></li>");
+                    console.log(latLonArray[0]+","+latLonArray[1]);
+                    $("#searchLoading").css("display","none"); 
+                }
+                                     
+          
+            });
+            
+        });
+     }   
+     else if(val.length==0)
+     {
+        $("#fill").empty();
+        $("#searchLoading").css("display","none");
+     }
+});
+$("#search").click(function(){
+    $("#fill").empty();
+    $("#searchLoading").css("display","none");
+});
+    // ends
+$("#location").keyup(function(){
 
-                                $.each(data.features,function(i,obj){
-                                    var latLonStr=obj.geometry.coordinates.toString();
-                                    var latLonArray=latLonStr.split(",");
-                                    if(obj.properties.street!=undefined)
-                                    {
-                                        $("#fill").prepend("<li><a href='#map' onclick='setLocation("+latLonArray[1]+","+latLonArray[0]+");' class='ui-btn'>"+obj.properties.street+","+obj.properties.city+","+obj.properties.state+","+obj.properties.country +"</a></li>");
-                                            console.log(latLonArray[0]+","+latLonArray[1]);
-                                            $("#searchLoading").css("display","none");
-                                    }
-                                    else if(obj.properties.city!=undefined && obj.properties.state!=undefined)
-                                    {
-                                        $("#fill").prepend("<li><a href='#map' onclick='setLocation("+latLonArray[1]+","+latLonArray[0]+");' class='ui-btn'>"+obj.properties.city+","+obj.properties.state+","+obj.properties.country +"</a></li>");
-                                        console.log(latLonArray[0]+","+latLonArray[1]);
-                                        $("#searchLoading").css("display","none"); 
-                                    }
-                                                         
-                              
-                                });
-                                
-                            });
-                         }   
-                         else if(val.length==0)
-                         {
-                            $("#fill").empty();
-                            $("#searchLoading").css("display","none");
-                         }
-                        });
-                        $("#search").click(function(){
-                            $("#fill").empty();
-                            $("#searchLoading").css("display","none");
-                        });
-                        // ends
-                        $("#location").keyup(function(){
-                        
-                        var val=$("#location").val();
-                        if(val.length>=3)
-                        {
-                            $("#adLoading").css("display","block");
-                            $("#fill2").empty();
-                            $.getJSON(url+val+limit,function(data,status){
+    var val=$("#location").val();
+    if(val.length>=3)
+    {
+        $("#adLoading").css("display","block");
+        $("#fill2").empty();
+        $.getJSON(url+val+limit,function(data,status){
 
-                                $.each(data.features,function(i,obj){
-                                    var latLonStr=obj.geometry.coordinates.toString();
-                                    var latLonArray=latLonStr.split(",");
-                                    if(obj.properties.street!=undefined)
-                                    {  
-                                        var placeVal=obj.properties.street+obj.properties.city+obj.properties.state+obj.properties.country;
-                                        $("#fill2").prepend("<li><a href='#' onclick='setName("+latLonArray[1]+","+latLonArray[0]+");' class='ui-btn'>"+obj.properties.street+","+obj.properties.city+","+obj.properties.state+","+obj.properties.country +"</a></li>");
-                                            console.log(latLonArray[0]+","+latLonArray[1]);
-                                            console.log(placeVal);
-                                            $("#adLoading").css("display","none");
-                                    }
-                                    else if(obj.properties.city!=undefined && obj.properties.state!=undefined)
-                                    {
-                                        var placeVal=obj.properties.city+obj.properties.state+obj.properties.country;
-                                        $("#fill2").prepend("<li><a href='#' onclick='setName("+latLonArray[1]+","+latLonArray[0]+");' class='ui-btn'>"+obj.properties.city+","+obj.properties.state+","+obj.properties.country +"</a></li>");
-                                        console.log(latLonArray[0]+","+latLonArray[1]); 
-                                        console.log(placeVal);
-                                        $("#adLoading").css("display","none");
-                                    }                          
-                                });
-                            });
-                         }   
-                         else if(val.length==0)
-                         {
-                            $("#fill2").empty();
-                            $("#adLoading").css("display","none");
-                         }
-                        });
-                        $("#location").click(function(){
-                            $("#fill2").empty();
-                            $("#location").val("");
-                            $("#adLoading").css("display","none");
-                        
-                        });
-                    });
+            $.each(data.features,function(i,obj){
+                var latLonStr=obj.geometry.coordinates.toString();
+                var latLonArray=latLonStr.split(",");
+                if(obj.properties.street!=undefined)
+                {  
+                    var placeVal=obj.properties.street+obj.properties.city+obj.properties.state+obj.properties.country;
+                    $("#fill2").prepend("<li><a href='#' onclick='setName("+latLonArray[1]+","+latLonArray[0]+");' class='ui-btn'>"+obj.properties.street+","+obj.properties.city+","+obj.properties.state+","+obj.properties.country +"</a></li>");
+                        console.log(latLonArray[0]+","+latLonArray[1]);
+                        console.log(placeVal);
+                        $("#adLoading").css("display","none");
+                }
+                else if(obj.properties.city!=undefined && obj.properties.state!=undefined)
+                {
+                    var placeVal=obj.properties.city+obj.properties.state+obj.properties.country;
+                    $("#fill2").prepend("<li><a href='#' onclick='setName("+latLonArray[1]+","+latLonArray[0]+");' class='ui-btn'>"+obj.properties.city+","+obj.properties.state+","+obj.properties.country +"</a></li>");
+                    console.log(latLonArray[0]+","+latLonArray[1]); 
+                    console.log(placeVal);
+                    $("#adLoading").css("display","none");
+                }                          
+            });
+        });
+     }   
+     else if(val.length==0)
+     {
+        $("#fill2").empty();
+        $("#adLoading").css("display","none");
+     }
+    });
+$("#location").click(function(){
+    $("#fill2").empty();
+    $("#location").val("");
+    $("#adLoading").css("display","none");
+});
+
 function setLocation(lat,lon)
 {
     map.setView([lat,lon],11);
@@ -155,3 +150,5 @@ function currentPosition(elementId)
         alert(error.message);
     }
 }
+
+},false);
