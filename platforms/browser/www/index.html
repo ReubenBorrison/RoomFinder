@@ -6,7 +6,7 @@
         <meta name="msapplication-tap-highlight" content="no" />
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
         <link rel="stylesheet" href="css/leaflet.css" />
         <link rel="stylesheet" href="css/themes/RoomFinder.css" />
         <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
@@ -15,54 +15,8 @@
         <script src="js/jquery-1.11.1.min.js"></script> 
         <script src="js/leaflet.js"></script>
         <script src="js/jquery.mobile-1.4.5.min.js"></script> 
-        
         <style>
-            .ui-panel {
-            width: 5em;
-            }
-
-            .ui-panel.ui-panel-position-right {
-            width: 5em;
-            }
-
-            .ui-panel.ui-panel-closed {
-            width: 0;
-            }
-
-            .ui-panel-animate.ui-panel-position-left.ui-panel-display-overlay, .ui-panel-animate.ui-panel-position-left.ui-panel-display-push {
-            -webkit-transform: translate3d(-5em, 0, 0);
-            -moz-transform: translate3d(-5em, 0, 0);
-            transform: translate3d(-5em, 0, 0)
-            }
-
-            .ui-panel-animate.ui-panel-position-right.ui-panel-display-overlay, .ui-panel-animate.ui-panel-position-right.ui-panel-display-push {
-            -webkit-transform: translate3d(10em, 0, 0);
-            -moz-transform: translate3d(10em, 0, 0);
-            transform: translate3d(10em, 0, 0)
-            }
-
-            .ui-panel-animate.ui-panel-content-fixed-toolbar-position-left.ui-panel-content-fixed-toolbar-open.ui-panel-content-fixed-toolbar-display-reveal, .ui-panel-animate.ui-panel-content-fixed-toolbar-position-left.ui-panel-content-fixed-toolbar-open.ui-panel-content-fixed-toolbar-display-push, .ui-panel-animate.ui-panel-content-wrap-position-left.ui-panel-content-wrap-open.ui-panel-content-wrap-display-reveal, .ui-panel-animate.ui-panel-content-wrap-position-left.ui-panel-content-wrap-open.ui-panel-content-wrap-display-push {
-            -webkit-transform: translate3d(5em, 0, 0);
-            -moz-transform: translate3d(5em, 0, 0);
-            transform: translate3d(5em, 0, 0)
-            }
-
-            .ui-panel-animate.ui-panel-page-content-position-left{
-            -webkit-transform: translate3d(5em, 0, 0);
-            -moz-transform: translate3d(5em, 0, 0);
-            transform: translate3d(5em, 0, 0);
-            }
-
-            .ui-panel-animate.ui-panel-page-content-position-right{
-                -webkit-transform:translate3d(-5em,0,0);
-                -moz-transform:translate3d(-5em,0,0);
-                transform:translate3d(-5em,0,0);
-            }
-            .ui-panel-animate.ui-panel-content-fixed-toolbar-position-right.ui-panel-content-fixed-toolbar-open.ui-panel-content-fixed-toolbar-display-reveal, .ui-panel-animate.ui-panel-content-fixed-toolbar-position-right.ui-panel-content-fixed-toolbar-open.ui-panel-content-fixed-toolbar-display-push, .ui-panel-animate.ui-panel-content-wrap-position-right.ui-panel-content-wrap-open.ui-panel-content-wrap-display-reveal, .ui-panel-animate.ui-panel-content-wrap-position-right.ui-panel-content-wrap-open.ui-panel-content-wrap-display-push {
-            -webkit-transform: translate3d(-10em, 0, 0);
-            -moz-transform: translate3d(-10em, 0, 0);
-            transform: translate3d(-10em, 0, 0)
-            }
+          
             @font-face{
                 font-family:'Raleway';
                 src:url('font/Raleway-Regular.ttf');
@@ -111,8 +65,8 @@
                <div style="height:150px"></div>
                <a href="#searchPage" class="ui-btn" style="box-shadow:0 0 0 0;" data-transition="slide">Search for Rooms</a>
                <h1 style="text-align:center;color:white;">or</h1>
-               <input type="button" style="box-shadow:0 0 0 0;" onclick="loginOrNot();" value="Place an Ad"/>
-               <a href="#userDashboard" class="ui-btn" style="box-shadow:0 0 0 0;" data-transition="slide">My dashboard</a>
+               <input type="button" style="box-shadow:0 0 0 0;" onclick="loginOrNot('ad');" value="Place an Ad"/>
+               <a href="" class="ui-btn" style="box-shadow:0 0 0 0;" data-transition="slide" onclick="loginOrNot('dashboard');">My dashboard</a>
             </div>
         </div> 
         <!-- user dashboard -->
@@ -134,7 +88,20 @@
         <div data-role="page" id="ad">
             <div data-role="panel" id="panelLogin" data-display="push" data-position-fixed="true" data-position="right">
                 <div style="height:100px; width:100%">
-                    <img src="" height="50px" width="50px" style="display:block;margin-left:auto; margin-right:auto;"/>
+                    <img class="userPic" src="" style="display:block;margin-left:auto; margin-right:auto;max-height:50px;max-width:50px;"/>
+                    <p id="userName"></p>
+                </div>
+                <hr>
+                <div>
+                    Settings
+                </div>
+                <hr>
+                <div>
+                    Chats
+                </div>
+                <hr>
+                <div id="logoutBtn" onclick="logout();">
+                    Logout
                 </div>
             </div>
             <div data-role="header" data-position-fixed="true">
@@ -186,6 +153,10 @@
                 <h1 style="text-align:center;"> It seems you need to login </h1>
                 <p>Sign in using your facebook account! It reduces effort to remember multiple passwords!</p>
                 <input type="button" onclick="fblogin();" value="Login using Facebook" data-transition="slide"/>
+                <div data-role="popup" id="netConnection">
+                    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+                    <p>There is no internet connection. Connect to Internet to Login</p>
+                </div>
             </div>
         </div>
 <!-- Next Page: search -->
@@ -217,24 +188,73 @@
                 <a href="" class="ui-btn ui-icon-carat-l ui-btn-icon-left ui-btn-icon-notext" data-rel="back" style="background-color:#76AA32;border-color:#76AA32;box-shadow:0 0 0 0;" data-transition="slide"></a>
             </div>
             <div data-role="content" >
+                <input type="button" onclick="refreshMap();" value="refresh"/>
                 <div id="map" style="height:500px;"></div>
-                <input type="button" onclick="refreshMap();"/>
+                
             </div>
         </div>
 <!-- Next Page: room info display -->
+        <div data-role="page" id="roomDisplay">
+            <div data-role="panel" id="panelLogin" data-display="push" data-position-fixed="true" data-position="right">
+                <div style="height:100px; width:100%">
+                    <img class="userPic" src="" style="display:block;margin-left:auto; margin-right:auto;max-height:50px;max-width:50px;"/>
+                    <p id="userName"></p>
+                </div>
+                <hr>
+                <div>
+                    Settings
+                </div>
+                <hr>
+                <div>
+                    Chats
+                </div>
+                <hr>
+                <div id="logoutBtn" onclick="logout();">
+                    Logout
+                </div>
+            </div>
+            <div data-role="header">
+                <h1> Place an Ad</h1>
+                <a href="" class="ui-btn ui-icon-carat-l ui-btn-icon-left ui-btn-icon-notext" data-rel="back" style="background-color:#76AA32;border-color:#76AA32;box-shadow:0 0 0 0;" data-transition="slide"></a>
+                <a href="#panelLogin" class="ui-btn ui-icon-bars ui-btn-icon-right ui-btn-icon-notext" style="background-color:#76AA32;border-color:#76AA32;box-shadow:0 0 0 0;" data-transition="slide"></a>
+            </div>
+            
+              <!--   image slider
+                room price
+                contact
+                No. of rooms
+                room description
+                comments -->
+                <div data-role="content" id="container">
+
+                <span id="roomPrice"></span>
+                <span id="roomContact"></span>
+                <span id="roomNumber"></span>
+                <span id="roomDesc"></span>
+                <input type="text" placeholder="enter comments"/>
+                <input type="button" value="comment"/>
+                <div id="commentBox">
+                </div>
+          
+
+        </div>  
         
-        <script type="text/javascript" src="js/mapSearchBox.js"> </script>
-        <script type="text/javascript" src="cordova.js"></script>
-        <script>
-        
-            $(document).swiperight(function()
-            {
-                $("#panelLogin").panel("open");
-            });
-                    
-                
-             </script>
+        <script type="text/javascript" src="cordova.js"></script>      
         <script src="js/openfb.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>              
+        <script type="text/javascript" src="js/camera.js"></script>
+        <script type="text/javascript" src="js/index.js"></script> 
+        <script type="text/javascript" src="js/mapSearchBox.js"> </script>
+        <script type="text/javascript" src="js/fbCode.js"></script>  
+        <script src="js/swipe.js"></script>
+        <script>
+            
+            function refreshMap()
+            {
+                map.invalidateSize('true');
+            }
+            // using jQuery
+            //window.mySwipe = $('#mySwipe').Swipe().data('Swipe');
+        </script>
+    
         </body>
 </html>

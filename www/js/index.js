@@ -60,12 +60,6 @@
              
                         success:function(data,xhr,status){
                         $("#msg").html("images uploaded");
-
-                         // for(var i in data.data)
-                        // {
-                        //       $("#demo").append(data.data[i][0].data.name);
-                        // }
-                        
                         },
                         error:function(xhr,err,msg){
                                     console.log(xhr);
@@ -101,7 +95,7 @@
                     //accepts: "application/json; charset=UTF-8",
                     type:"POST",
                     dataType:"json",
-                     data: '{ "query" : "match(n) where n.id={id} \
+                    data: '{ "query" : "match(n) where n.id={id} \
                                         create(n)-[rented:rented]->(k:room{roomid:{roomId},roomNum:{roomNum},price:{price},\
                                         description:{desc},latitude:{lat},longitude:{lon}}) return n,k;", \
                             "params": {"id":"'+id+'","roomId":"'+roomId+'","roomNum":"'+roomNum+'","price":"'+price+'",\
@@ -109,11 +103,7 @@
          
                     success:function(data,xhr,status){
                     $("#msg").html("data submitted");
-                     // for(var i in data.data)
-                    // {
-                    //       $("#demo").append(data.data[i][0].data.name);
-                    // }
-                    
+                     
                     },
                     error:function(xhr,err,msg){
                                 console.log(xhr);
@@ -122,8 +112,9 @@
                     }
                 }); 
                 //adding image links to the db
-                 
-                
+
+                $("#message").popup("close");
+                window.location="#dashboard";
                 
             }
             
@@ -165,18 +156,12 @@
     });
      $.ajax({
                 url:"http://ec2-52-58-42-113.eu-central-1.compute.amazonaws.com/db/data/cypher",
-                //accepts: "application/json; charset=UTF-8",
                 type:"POST",
                 dataType:"json",
                 data: '{ "query" : "match(n{id:{id}}) return n", \
                         "params": {"id":'+id+'}}',
                 success:function(data,xhr,status){
-                alert(data.data[0][0].data.id);
-                 // for(var i in data.data)
-                // {
-                //       $("#demo").append(data.data[i][0].data.name);
-                // }
-                
+                alert(data.data[0][0].data.id);                
                 },
                 error:function(xhr,err,msg){
                             console.log(xhr);
@@ -188,24 +173,3 @@
 
       }
    
-
-
-
-   var currentIndex = 0,
-  items = $('.container div'),
-  itemAmt = items.length;
-
-function cycleItems() {
-  var item = $('.container div').eq(currentIndex);
-  items.hide();
-  item.css('display','inline-block');
-}
-
-
-var swiper = new Swiper('.swiper-container', {
-        pagination: '.swiper-pagination',
-        paginationClickable: true,
-        nextButton: '.swiper-button-next',
-        prevButton: '.swiper-button-prev',
-        spaceBetween: 30
-    });

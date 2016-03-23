@@ -30,7 +30,7 @@ $(document).on("pagecreate","#dashboard",function(){
                                          
               
                 });
-                
+                    
             });
          }   
          else if(val.length==0)
@@ -108,7 +108,7 @@ function displayRoomsOnMap(lat,lon)
                 url:"http://ec2-52-58-42-113.eu-central-1.compute.amazonaws.com/db/data/cypher",
                 type:"POST",
                 dataType:"json",
-                data: '{ "query" : "match(n:room) where {LatLeft}>=n.latitude>={LatRight} and {LonLeft}>=n.longitude>={LonRight} return n", \
+                data: '{ "query" : "match(n:room)-[:images]->(k:imageLink) where {LatLeft}>=n.latitude>={LatRight} and {LonLeft}>=n.longitude>={LonRight} return n,k", \
                         "params": {"LatLeft":'+qLatLeft+',"LatRight":'+qLatRight+',"LonLeft":'+qLonLeft+',"LonRight":'+qLonRight+'}}',
                
                 success:function(data,xhr,status){
@@ -132,8 +132,9 @@ function displayRoomsOnMap(lat,lon)
                       description=data.data[i][0].data.description;
                       roomNum=data.data[i][0].data.roomNum;
                       price=data.data[i][0].data.price;
+                      imageLink=data.data[i][1].data.link;
                       console.log(lati);
-                      markerContent='<a href="" data-transition="slide" onclick="roomDisplay('+price+','+roomNum+');"><p><img src="" alt="Room image" width="80" height="80"> '+description+'<br>Phone number: 5</p></a>';
+                      markerContent='<a href="" data-transition="slide" onclick="roomDisplay('+price+','+roomNum+');"><p><img src="'+imageLink+'" alt="Room image" width="80" height="80"> '+description+'<br>Phone number:</p></a>';
                       marker.bindPopup(markerContent);
                       
                     }
@@ -153,7 +154,7 @@ function displayRoomsOnMap(lat,lon)
                 }
             }); 
 }
-function roomDisplay(price,roomNum,lat,lon)
+function roomDisplay(price,roomNum)
 {
     
     $("#roomPrice").html("Cost:"+price);
