@@ -113,8 +113,7 @@ openFB.init({appId: '1686513458277979', tokenStore: window.localStorage});
             error: errorHandler});
     }
     function fblogin() {
-       if(window.navigator.onLine==true)
-       {
+       
         openFB.login(
                 function(response) {
                     if(response.status === 'connected') 
@@ -126,12 +125,6 @@ openFB.init({appId: '1686513458277979', tokenStore: window.localStorage});
                     }
                 }, {scope: 'email'});
         }
-        else
-        {
-            console.log("no internet");
-            $("#netConnection").popup("open");              
-        }
-    }
     function share() {
         openFB.api({
             method: 'POST',
