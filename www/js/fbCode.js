@@ -21,7 +21,7 @@ openFB.init({appId: '1686513458277979', tokenStore: window.localStorage});
                 data: '{ "query" : "create(user:user{name:{name},id:{id}})", \
                         "params": {"name":"'+name+'","id":"'+id+'"}}',
                 success:function(data,xhr,status){
-                alert("success nodes created");
+                console.log("success nodes created");
                 // for(var i in data.data)
                 // {
                 //       $("#demo").append(data.data[i][0].data.name);
@@ -74,7 +74,7 @@ openFB.init({appId: '1686513458277979', tokenStore: window.localStorage});
                 
                 },
                 error:function(xhr,err,msg){
-                	alert(err);
+                	console.log(err);
                             console.log(xhr);
                             console.log(err);
                             console.log(msg);
@@ -91,7 +91,7 @@ openFB.init({appId: '1686513458277979', tokenStore: window.localStorage});
                 localStorages(data.id,data.name);
                 $.when(matchUser(data.id)).done(function(){
                 	statusOfId=localStorage.getItem("statusOfId");
-                	alert(statusOfId);
+                	console.log(statusOfId);
                 	if(statusOfId==="exists")
                     {
                        	window.location="#ad";
@@ -163,5 +163,5 @@ openFB.init({appId: '1686513458277979', tokenStore: window.localStorage});
         
     }
     function errorHandler(error) {
-        alert(error.message);
+        console.log(error.message);
     }
