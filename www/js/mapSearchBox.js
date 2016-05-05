@@ -90,7 +90,7 @@ $(document).on("pagecreate","#dashboard",function(){
 });
 function displayRoomsOnMap(lat,lon)
 {   
-    map.setView([lat,lon],18);
+    map.setView([lat,lon],15);
     L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 22}).addTo(map);
     var qLatLeft=lat+.050;
     var qLatRight=lat-.050;
